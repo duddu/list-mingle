@@ -1,0 +1,67 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "$id": "https://list-mingle.duddu.dev/db.schema.json",
+    "type": "object",
+    "properties": {
+        "lists": {
+            "type": "object",
+            "properties": {
+                "$list_id": {
+                    "type": "object",
+                    "properties": {
+                        "author": {
+                            "type": "string"
+                        },
+                        "name": {
+                            "type": "string"
+                        },
+                        "timestamp": {
+                            "type": "integer"
+                        }
+                    },
+                    "required": [
+                        "author",
+                        "name",
+                        "timestamp"
+                    ]
+                }
+            }
+        },
+        "tasks": {
+            "type": "object",
+            "properties": {
+                "$list_id": {
+                    "type": "object",
+                    "properties": {
+                        "$task_id": {
+                            "type": "object",
+                            "properties": {
+                                "author": {
+                                    "type": "string"
+                                },
+                                "completed": {
+                                    "type": "boolean"
+                                },
+                                "notes": {
+                                    "type": "string"
+                                },
+                                "timestamp": {
+                                    "type": "integer"
+                                },
+                                "title": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "author",
+                                "completed",
+                                "timestamp",
+                                "title"
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,36 @@
+{
+    "configurations": [
+        {
+            "name": "Flutter (Chrome)",
+            "program": "lib/main.dart",
+            "deviceId": "chrome",
+            "request": "launch",
+            "type": "dart",
+            "args": [
+                "--dart-define-from-file",
+                ".dart-define.json"
+            ]
+        },
+        {
+            "name": "Flutter (macOS)",
+            "program": "lib/main.dart",
+            "deviceId": "macos",
+            "request": "launch",
+            "type": "dart",
+            "args": [
+                "--dart-define-from-file",
+                ".dart-define.json"
+            ]
+        },
+        {
+            "name": "Flutter Tests",
+            "program": "test",
+            "request": "launch",
+            "type": "dart",
+            "args": [
+                "--dart-define-from-file",
+                ".dart-define.json"
+            ]
+        }
+    ]
+}

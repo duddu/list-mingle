@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "769326762437",
+    "firebase_url": "https://list-mingle-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "list-mingle",
+    "storage_bucket": "list-mingle.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:769326762437:android:a0652d8dbc52de202a23ac",
+        "android_client_info": {
+          "package_name": "dev.duddu.list_mingle"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDQq1PVzFjO0iO-RSaYUKRHQhqVYM_cu2g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
