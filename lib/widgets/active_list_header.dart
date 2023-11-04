@@ -19,22 +19,39 @@ class ListHeader extends HookConsumerWidget {
               padding: const EdgeInsets.fromLTRB(
                   basePadding + 2, 0, basePadding + 2, 12),
               color: Theme.of(context).colorScheme.primary,
-              child: TextField(
-                controller: TextEditingController(text: value.name),
-                autofocus: true,
-                cursorColor: Colors.white,
-                decoration: const InputDecoration(
-                  contentPadding: EdgeInsets.only(bottom: 2),
-                  border: InputBorder.none,
+              child:
+                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                Expanded(
+                    child: TextField(
+                  controller: TextEditingController(text: value.name),
+                  autofocus: true,
+                  maxLength: 40,
+                  cursorColor: Colors.white,
+                  decoration: const InputDecoration(
+                    counterText: '',
+                    contentPadding: EdgeInsets.only(bottom: 2),
+                    border: InputBorder.none,
+                  ),
+                  style: Theme.of(context).textTheme.headlineLarge,
+                  onSubmitted: (String text) {
+                    if (text.isNotEmpty && text != value.name) {
+                      ref.read(viewListsProvider.notifier).edit(value.id, text);
+                    }
+                    isEditing.value = false;
+                  },
+                )),
+                IconButton(
+                  icon: const Icon(
+                    Icons.close_rounded,
+                    color: Colors.white,
+                  ),
+                  padding: const EdgeInsets.all(4),
+                  visualDensity: VisualDensity.compact,
+                  onPressed: () {
+                    isEditing.value = false;
+                  },
                 ),
-                style: Theme.of(context).textTheme.headlineLarge,
-                onSubmitted: (String text) {
-                  if (text.isNotEmpty && text != value.name) {
-                    ref.read(viewListsProvider.notifier).edit(value.id, text);
-                  }
-                  isEditing.value = false;
-                },
-              ))
+              ]))
           : Container(
               padding: const EdgeInsets.fromLTRB(
                   basePadding + 2, 4, basePadding + 2, basePadding + 2),
@@ -43,7 +60,11 @@ class ListHeader extends HookConsumerWidget {
                   textAlign: TextAlign.start,
                   style: Theme.of(context).textTheme.headlineLarge)),
       AsyncError(:final error) => Text('Error: $error'),
-      _ => Text('', style: Theme.of(context).textTheme.headlineLarge),
+      _ => Container(
+          padding: const EdgeInsets.fromLTRB(
+              basePadding + 2, 4, basePadding + 2, basePadding + 2),
+          color: Theme.of(context).colorScheme.primary,
+          child: Text('', style: Theme.of(context).textTheme.headlineLarge)),
     };
   }
 }

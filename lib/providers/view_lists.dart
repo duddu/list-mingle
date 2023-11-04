@@ -1,7 +1,6 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/foundation.dart' show immutable;
 import 'package:flutter/material.dart';
-import 'package:list_mingle/providers/database_active_list_events.dart';
 import 'package:list_mingle/providers/database_lists_references.dart';
 import 'package:list_mingle/providers/shared_preferences_lists.dart';
 import 'package:list_mingle/providers/shared_preferences_user.dart';
@@ -60,9 +59,9 @@ class ViewListsNotifier extends AutoDisposeAsyncNotifier<List<ViewListModel>> {
     if (editedName.isNotEmpty) {
       state.whenData((lists) async {
         state = const AsyncValue.loading();
-        await AsyncValue.guard(() async {
+        state = await AsyncValue.guard(() async {
           final ViewListModel editingList =
-              lists.firstWhere((list) => list.id == listId);
+              lists.singleWhere((list) => list.id == listId);
           final ViewListModel editedLocalList = ViewListModel(
               id: listId,
               active: editingList.active,
@@ -71,9 +70,9 @@ class ViewListsNotifier extends AutoDisposeAsyncNotifier<List<ViewListModel>> {
               timestamp: DateTime.now().microsecondsSinceEpoch);
           _listsRefsNotifier.editList(
               listId, editedLocalList.toDatabaseListData());
-          // return lists
-          //     .map((list) => list.id == listId ? editedLocalList : list)
-          //     .toList();
+          return lists
+              .map((list) => list.id == listId ? editedLocalList : list)
+              .toList();
         });
       });
     }
@@ -103,22 +102,22 @@ class ViewListsNotifier extends AutoDisposeAsyncNotifier<List<ViewListModel>> {
     return _listsRefsNotifier.removeList(listKey);
   }
 
-  void _onActiveListValueCallback(_, AsyncValue<DatabaseEvent> event) {
-    if (event.value == null) {
-      return;
-    }
-    state.whenData((lists) async {
-      final changedList =
-          ViewListModel.fromDatabaseListSnapshot(event.value!.snapshot, true);
-      if (changedList.timestamp ==
-          lists.singleWhere((list) => list.id == changedList.id).timestamp) {
-        return;
-      }
-      state = AsyncValue.data(lists
-          .map((list) => list.id != changedList.id ? list : changedList)
-          .toList());
-    });
-  }
+  // void _onActiveListValueCallback(_, AsyncValue<DatabaseEvent> event) {
+  //   if (event.value == null) {
+  //     return;
+  //   }
+  //   state.whenData((lists) async {
+  //     final changedList =
+  //         ViewListModel.fromDatabaseListSnapshot(event.value!.snapshot, true);
+  //     if (changedList.timestamp ==
+  //         lists.singleWhere((list) => list.id == changedList.id).timestamp) {
+  //       return;
+  //     }
+  //     state = AsyncValue.data(lists
+  //         .map((list) => list.id != changedList.id ? list : changedList)
+  //         .toList());
+  //   });
+  // }
 
   @override
   Future<List<ViewListModel>> build() async {
@@ -127,10 +126,10 @@ class ViewListsNotifier extends AutoDisposeAsyncNotifier<List<ViewListModel>> {
     if (listsSnapshots.isEmpty) {
       return [];
     }
+    // ref.listen<AsyncValue<DatabaseEvent>>(
+    //     databaseActiveListValueEventProvider, _onActiveListValueCallback);
     String? activeListId =
         (await ref.read(sharedPreferencesListsProvider.future)).activeList;
-    ref.listen<AsyncValue<DatabaseEvent>>(
-        databaseActiveListValueEventProvider, _onActiveListValueCallback);
     return listsSnapshots.map((snapshot) {
       final bool isActive = snapshot.key == activeListId;
       return ViewListModel.fromDatabaseListSnapshot(snapshot, isActive);

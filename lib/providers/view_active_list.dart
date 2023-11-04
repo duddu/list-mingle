@@ -3,6 +3,6 @@ import 'package:riverpod/riverpod.dart';
 
 final viewActiveListProvider =
     AutoDisposeFutureProvider<ViewListModel>((ref) async {
-  final viewLists = ref.watch(viewListsProvider);
-  return viewLists.value!.singleWhere((list) => list.active);
+  final viewLists = await ref.watch(viewListsProvider.future);
+  return viewLists.singleWhere((list) => list.active);
 });

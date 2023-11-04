@@ -108,6 +108,7 @@ class ListsDrawerInsertList extends HookConsumerWidget {
               maxLength: 40,
               style: Theme.of(context).textTheme.titleSmall,
               decoration: const InputDecoration(
+                counterText: '',
                 contentPadding: EdgeInsets.only(bottom: 2),
                 hintText: 'New list name',
                 border: InputBorder.none,
